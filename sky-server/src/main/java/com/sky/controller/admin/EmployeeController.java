@@ -104,4 +104,19 @@ public class EmployeeController {
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
+
+    /**
+     * 员工启用或禁用接口
+     *
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("员工启用或禁用接口")
+    public Result enableOrDisable(@PathVariable Integer status,Long id) {
+        log.info("员工启用或禁用：{},{}", status, id);
+        employeeService.enableOrDisable(status, id);
+        return Result.success();
+    }
 }
