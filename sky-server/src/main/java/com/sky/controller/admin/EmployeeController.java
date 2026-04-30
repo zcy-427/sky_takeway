@@ -119,4 +119,17 @@ public class EmployeeController {
         employeeService.enableOrDisable(status, id);
         return Result.success();
     }
+
+    /**
+     * 根据ID查询员工信息接口
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据ID查询员工信息接口")
+    public Result<Employee> getInfoById(@PathVariable Long id) {
+        Employee employee= employeeService.getInfoById(id);
+        return Result.success(employee);
+    }
 }
