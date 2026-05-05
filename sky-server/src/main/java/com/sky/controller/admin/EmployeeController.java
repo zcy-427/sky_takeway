@@ -83,7 +83,6 @@ public class EmployeeController {
      * @param employeeDTO
      * @return
      */
-    //TODO:这里的接口还没有设置,前端代码当中有问题
     @PostMapping
     @ApiOperation("新增员工接口")
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
@@ -147,4 +146,6 @@ public class EmployeeController {
         employeeService.update(employeeDTO);
         return Result.success();
     }
+
+    //TODO:缺少删除员工接口
 }
