@@ -14,6 +14,7 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -147,5 +148,13 @@ public class EmployeeController {
         return Result.success();
     }
 
-    //TODO:缺少删除员工接口
+    //TODO:删除员工接口还有待完善，后续可以考虑增加一个字段来标记员工是否被删除，而不是直接从数据库中删除员工数据
+    //改功能暂时不实现，后续可以根据业务需求来完善删除员工接口
+//    @DeleteMapping
+//    @ApiOperation("删除员工接口")
+//    public Result delete(Long id) {
+//        log.info("删除员工：id={}", id);
+//        employeeService.delete(id);
+//        return Result.success();
+//    }
 }

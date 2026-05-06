@@ -46,11 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
         //设置默认状态为禁用
         category.setStatus(StatusConstant.DISABLE);
 
-        //设置创建时间、修改时间、创建人、修改人
-        category.setCreateTime(LocalDateTime.now());
-        category.setUpdateTime(LocalDateTime.now());
-        category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        //创建时间、修改时间、创建人、修改人通过AutoFill功能自动填充
 
         //保存数据到数据库
         categoryMapper.insert(category);
@@ -100,9 +96,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category=new Category();
         BeanUtils.copyProperties(categoryDTO,category);
 
-        //设置修改时间和修改人
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        //修改时间、修改人通过AutoFill功能自动填充
 
         //修改分类
         categoryMapper.update(category);
@@ -119,8 +113,6 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = Category.builder()
                 .id(id)
                 .status(status)
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
         categoryMapper.update(category);
     }
