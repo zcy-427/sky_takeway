@@ -88,4 +88,12 @@ public class SetmealController {
         setmealService.updateWithDish(setmealDTO);
         return Result.success();
     }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用或禁用套餐接口")
+    public Result startOrStop(@PathVariable Integer status, long id) {
+        log.info("启用或禁用套餐：{},{}", status, id);
+
+        return Result.success();
+    }
 }

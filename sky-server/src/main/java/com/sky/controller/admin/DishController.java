@@ -91,12 +91,24 @@ public class DishController {
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
-
+    /**
+     * 根据分类id查询菜品接口
+     * @param categoryId
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("根据分类id查询菜品")
     public Result<List<Dish>> list(Long categoryId) {
         log.info("根据分类id查询菜品：categoryId={}", categoryId);
         List<Dish> dishList = dishService.list(categoryId);
         return Result.success(dishList);
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用或禁用菜品接口")
+    public Result<String> startOrStop(@PathVariable Integer status, Long id) {
+        log.info("启用或禁用菜品：{},{}", status, id);
+        dishService.startOrStop(status, id);
+        return Result.success();
     }
 }
