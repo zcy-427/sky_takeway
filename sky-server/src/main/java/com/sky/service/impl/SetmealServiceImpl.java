@@ -9,6 +9,8 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.SetmealEnableFailedException;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -28,7 +30,8 @@ public class SetmealServiceImpl implements SetmealService {
     private SetmealMapper setmealMapper;
     @Autowired
     private SetmealDishMapper setmealDishMapper;
-
+    @Autowired
+    private DishMapper dishMapper;
     /**
      * 新增套餐，同时保存套餐和菜品的关联关系
      *
@@ -150,4 +153,27 @@ public class SetmealServiceImpl implements SetmealService {
         //批量插入数据到数据库
         setmealDishMapper.insertBatch(setmealDishes);
     }
+
+    @Transactional
+    @Override
+    public void startOrStop(Integer status, long id) {
+        //如果是启用套餐，需要判断关联的菜品是否为起售状态
+        if (status == StatusConstant.ENABLE) {
+            List<Dish> dishList = dishMapper.getBySetmealId(id);
+            if (dishList != null && dishList.size() > 0) {
+                dishList.forEach(dish -> {
+                    if (StatusConstant.DISABLE == dish.getStatus()) {
+                        throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    }
+                });
+            }
+        }
+
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+        setmealMapper.update(setmeal);
+    }
 }
+

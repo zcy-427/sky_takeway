@@ -93,7 +93,7 @@ public class SetmealController {
     @ApiOperation("启用或禁用套餐接口")
     public Result startOrStop(@PathVariable Integer status, long id) {
         log.info("启用或禁用套餐：{},{}", status, id);
-
+        setmealService.startOrStop(status, id);
         return Result.success();
     }
 }
