@@ -2,6 +2,8 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
@@ -15,8 +17,10 @@ import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SetmealServiceImpl implements SetmealService {
@@ -30,6 +34,7 @@ public class SetmealServiceImpl implements SetmealService {
      *
      * @param setmealDTO
      */
+    @Transactional
     @Override
     public void saveWithDish(SetmealDTO setmealDTO) {
         Setmeal setmeal =new Setmeal();
@@ -69,5 +74,28 @@ public class SetmealServiceImpl implements SetmealService {
 
         //封装分页查询结果并返回
         return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    /**
+     * 批量删除套餐
+     *
+     * @param ids
+     */
+    @Transactional
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        //判断当前套餐是否为起售状态
+        ids.forEach(id->{
+            Setmeal setmeal = setmealMapper.getById(id);
+            if(setmeal.getStatus()== StatusConstant.ENABLE){
+                //当前套餐为起售状态，不能删除
+                throw new RuntimeException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        });
+
+        //删除套餐
+        setmealMapper.deleteByIds(ids);
+        //删除套餐和菜品的关联关系
+        setmealDishMapper.deleteBySetmealIds(ids);
     }
 }
