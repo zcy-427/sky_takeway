@@ -97,6 +97,12 @@ public class OrderController {
         return Result.success();
     }
 
+    /**
+     * 再来一单接口
+     *
+     * @param id
+     * @return
+     */
     @PostMapping("repetition/{id}")
     @ApiOperation("再来一单接口")
     public Result repetition(@PathVariable Long id) throws Exception {
@@ -105,4 +111,16 @@ public class OrderController {
         return Result.success();
     }
 
+    /**
+     * 订单催单接口
+     *
+     * @return
+     */
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("订单催单接口")
+    public Result reminder(@PathVariable Long id) {
+        log.info("订单催单接口");
+        orderService.reminder(id);
+        return Result.success();
+    }
 }
